@@ -66,7 +66,7 @@ const rightLeg = (
       position: 'absolute',
       top: '210px',
       right: '10px',
-      rotate: '-45deg',
+      rotate: '-60deg',
       transformOrigin: 'right top',
     }}
   />
@@ -81,7 +81,7 @@ const leftLeg = (
       position: 'absolute',
       top: '210px',
       right: '-100px',
-      rotate: '45deg',
+      rotate: '60deg',
       transformOrigin: 'left top',
     }}
   />
