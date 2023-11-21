@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 // Importing words im going to use.
 import words from './data/wordList.json';
 import HangmanDrawing from './components/HangmanDrawing';
@@ -14,7 +14,45 @@ function App() {
   // Tracking which letter we have guessed
   const [guessedLetter, setGuessedLetters] = useState<string[]>([]);
 
-  console.log(wordToGuess);
+  // Amount of incorrect letter the user has.
+  const incorrectLetters = guessedLetter.filter(
+    (letter) => !wordToGuess.includes(letter)
+  );
+
+  // Every time the component is rerendered the useEffect hook is recreating and
+  // re-creating this function and re-running the event handler.
+  // We only want it to run when the component inside this function changes,
+  // in this case when 'guessedLetter' changes.
+  // Thats why we use 'useCallback'.
+  const addGuessedLetter = useCallback(
+    (pressedKey: string) => {
+      if (guessedLetter.includes(pressedKey)) return;
+
+      setGuessedLetters((currentLetters) => [...currentLetters, pressedKey]);
+    },
+    [guessedLetter]
+  );
+
+  // Handling the event in where we press a letter on the keyboard
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      const key = e.key;
+
+      // We are checking if the pressed key is a letter.
+      if (!key.match(/^[a-z]$/)) return;
+
+      e.preventDefault();
+      addGuessedLetter(key);
+    };
+
+    // On keypress we are calling the handler
+    document.addEventListener('keypress', handler);
+
+    // When the key is released, we want to clean the event listener.
+    return () => {
+      document.removeEventListener('keypress', handler);
+    };
+  }, [guessedLetter]);
 
   return (
     <div
@@ -28,7 +66,7 @@ function App() {
       }}
     >
       <div style={{ fontSize: '2rem', textAlign: 'center' }}>Lose Win</div>
-      <HangmanDrawing />
+      <HangmanDrawing numberOfGuesses={incorrectLetters.length} />
       <HangmanWord wordToGuess={wordToGuess} guessedLetters={guessedLetter} />
 
       <div style={{ alignSelf: 'stretch' }}>
