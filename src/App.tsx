@@ -19,14 +19,15 @@ function App() {
     (letter) => !wordToGuess.includes(letter)
   );
 
-  // Every time the component is rerendered the useEffect hook is recreating and
-  // re-creating this function and re-running the event handler.
+  // Every time the component is rerendered the useEffect hook is recreating
+  // this function and re-running the event handler.
   // We only want it to run when the component inside this function changes,
   // in this case when 'guessedLetter' changes.
   // Thats why we use 'useCallback'.
   const addGuessedLetter = useCallback(
     (pressedKey: string) => {
       if (guessedLetter.includes(pressedKey)) return;
+      console.log(guessedLetter);
 
       setGuessedLetters((currentLetters) => [...currentLetters, pressedKey]);
     },
@@ -70,7 +71,13 @@ function App() {
       <HangmanWord wordToGuess={wordToGuess} guessedLetters={guessedLetter} />
 
       <div style={{ alignSelf: 'stretch' }}>
-        <Keyboard />
+        <Keyboard
+          activeLetter={guessedLetter.filter((letter) =>
+            wordToGuess.includes(letter)
+          )}
+          inactiveLetters={incorrectLetters}
+          addGuessedLetter={addGuessedLetter}
+        />
       </div>
     </div>
   );

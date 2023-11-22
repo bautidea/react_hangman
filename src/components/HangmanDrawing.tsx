@@ -98,7 +98,9 @@ const HangmanDrawing = ({ numberOfGuesses }: Props) => {
     // Using relative positioning in order to make absolute positioning
     // all different hangman parts inside this container.
     <div style={{ position: 'relative' }}>
-      {bodyParts.slice(0, numberOfGuesses)}
+      {bodyParts.slice(0, numberOfGuesses).map((part, index) => (
+        <div key={index}>{part}</div>
+      ))}
 
       <div
         style={{

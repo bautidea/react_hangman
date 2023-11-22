@@ -7,7 +7,6 @@
   text-transform: uppercase;
   font-weight: bold;
   padding: 0.5rem;
-  cursor: pointer;
 }
 
 .btn.active {
@@ -22,4 +21,5 @@
 .btn:hover:not(:disabled),
 .btn:focus:not(:disabled) {
   background-color: hsl(200, 100%, 75%);
+  cursor: pointer;
 }
