@@ -5,11 +5,14 @@ import HangmanDrawing from './components/HangmanDrawing';
 import HangmanWord from './components/HangmanWord';
 import Keyboard from './components/Keyboard/Keyboard';
 
+// Function to obtain a new word.
+const getWord = () => {
+  return words[Math.floor(Math.random() * words.length)];
+};
+
 function App() {
   // Using a function to get a random word from list.
-  const [wordToGuess, setWordToGuess] = useState(() => {
-    return words[Math.floor(Math.random() * words.length)];
-  });
+  const [wordToGuess, setWordToGuess] = useState(getWord);
 
   // Tracking which letter we have guessed
   const [guessedLetter, setGuessedLetters] = useState<string[]>([]);
@@ -62,6 +65,27 @@ function App() {
       document.removeEventListener('keypress', handler);
     };
   }, [guessedLetter]);
+
+  // Adding event when user press enter the pages refreshes.
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      const key = e.key;
+
+      if (key !== 'Enter') return;
+
+      e.preventDefault();
+      setGuessedLetters([]);
+      setWordToGuess(getWord());
+    };
+
+    // On keypress we are calling the handler
+    document.addEventListener('keypress', handler);
+
+    // When the key is released, we want to clean the event listener.
+    return () => {
+      document.removeEventListener('keypress', handler);
+    };
+  }, []);
 
   return (
     <div
