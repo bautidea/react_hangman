@@ -1,9 +1,14 @@
 interface Props {
+  reveal?: boolean;
   wordToGuess: string;
   guessedLetters: string[];
 }
 
-const HangmanWord = ({ wordToGuess, guessedLetters }: Props) => {
+const HangmanWord = ({
+  reveal = false,
+  wordToGuess,
+  guessedLetters,
+}: Props) => {
   const lettersToFill = wordToGuess.split('');
 
   return (
@@ -23,9 +28,14 @@ const HangmanWord = ({ wordToGuess, guessedLetters }: Props) => {
           {/* The next span is used to hide the letters */}
           <span
             style={{
-              visibility: guessedLetters.includes(letter)
-                ? 'visible'
-                : 'hidden',
+              visibility:
+                guessedLetters.includes(letter) || reveal
+                  ? 'visible'
+                  : 'hidden',
+              color:
+                !guessedLetters.includes(letter) && reveal
+                  ? 'lightgray'
+                  : 'black',
             }}
           >
             {letter}

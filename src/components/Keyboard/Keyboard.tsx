@@ -2,12 +2,14 @@ import keys from '../../data/keys.json';
 import styles from './Keyboard.module.css';
 
 interface Props {
+  disabled?: boolean;
   activeLetter: string[];
   inactiveLetters: string[];
   addGuessedLetter: (pressedKey: string) => void;
 }
 
 const Keyboard = ({
+  disabled = false,
   activeLetter,
   inactiveLetters,
   addGuessedLetter,
@@ -23,7 +25,7 @@ const Keyboard = ({
           isInactive ? styles.inactive : ''
         }`}
         onClick={() => addGuessedLetter(letter)}
-        disabled={isActive || isInactive}
+        disabled={isActive || isInactive || disabled}
       >
         {letter}
       </button>

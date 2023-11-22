@@ -19,6 +19,15 @@ function App() {
     (letter) => !wordToGuess.includes(letter)
   );
 
+  // Checking if user lost the match. when the amount of incorrect letters reach 6 (max
+  // amount of body parts)
+  const isLoser = incorrectLetters.length === 6;
+
+  // Same for winner.
+  const isWinner = wordToGuess
+    .split('')
+    .every((letter) => guessedLetter.includes(letter));
+
   // Every time the component is rerendered the useEffect hook is recreating
   // this function and re-running the event handler.
   // We only want it to run when the component inside this function changes,
@@ -26,12 +35,11 @@ function App() {
   // Thats why we use 'useCallback'.
   const addGuessedLetter = useCallback(
     (pressedKey: string) => {
-      if (guessedLetter.includes(pressedKey)) return;
-      console.log(guessedLetter);
+      if (guessedLetter.includes(pressedKey) || isLoser || isWinner) return;
 
       setGuessedLetters((currentLetters) => [...currentLetters, pressedKey]);
     },
-    [guessedLetter]
+    [guessedLetter, isLoser, isWinner]
   );
 
   // Handling the event in where we press a letter on the keyboard
@@ -66,12 +74,21 @@ function App() {
         alignItems: 'center',
       }}
     >
-      <div style={{ fontSize: '2rem', textAlign: 'center' }}>Lose Win</div>
+      <div style={{ fontSize: '2rem', textAlign: 'center' }}>
+        {isWinner && 'Winner - Refresh to try again'}
+        {isLoser && 'Nice Try - Refresh to try again'}
+      </div>
+
       <HangmanDrawing numberOfGuesses={incorrectLetters.length} />
-      <HangmanWord wordToGuess={wordToGuess} guessedLetters={guessedLetter} />
+      <HangmanWord
+        reveal={isLoser}
+        wordToGuess={wordToGuess}
+        guessedLetters={guessedLetter}
+      />
 
       <div style={{ alignSelf: 'stretch' }}>
         <Keyboard
+          disabled={isWinner || isLoser}
           activeLetter={guessedLetter.filter((letter) =>
             wordToGuess.includes(letter)
           )}
