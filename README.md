@@ -1,8 +1,8 @@
 # Hangman Game
 
-<div align='center'>
-<img src='./src/assets/hangman_img_win.png' width=50% height=50%>
-<img src='./src/assets/hangman_img_lose.png' width=50% height=50%>
+<div align='center' display='flex' flex-direction='row'>
+<img src='./src/assets/hangman_game_img_win.png' width=50% height=50%>
+<img src='./src/assets/hangman_game_img_lose.png' width=50% height=50%>
 </div>
 This game was developed using React + Typescript + CSS.
 
